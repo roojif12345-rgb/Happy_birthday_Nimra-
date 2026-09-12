@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Surprise</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #ffe6eb; color: #4a4a4a; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+    .mobile-container { width: 100%; max-width: 414px; min-height: 100vh; background: #fff0f3; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+    
+    /* Step Indicators */
+    .steps-bar { display: flex; justify-content: center; gap: 6px; padding: 15px; position: absolute; top: 0; width: 100%; z-index: 10; }
+    .step-dot { width: 22px; height: 22px; border-radius: 50%; background: #ffd1dc; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #888; }
+    .step-dot.active { background: #ff4d6d; color: white; }
+
+    .page { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 30px 20px; text-align: center; position: relative; }
+    .page.active { display: flex; }
+
+    /* Loading Screen */
+    .heart-loader { font-size: 50px; animation: pulse 1.2s infinite; margin-bottom: 20px; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    .progress-bar-bg { width: 80%; height: 8px; background: #ffccd5; border-radius: 10px; overflow: hidden; margin-top: 15px; }
+    .progress-bar { width: 0%; height: 100%; background: #ff4d6d; transition: width 0.3s; }
+
+    /* Buttons */
+    .btn { background: #ff4d6d; color: white; border: none; padding: 12px 30px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3); }
+
+    /* Calendar */
+    .calendar-card { background: white; border-radius: 15px; padding: 15px; width: 90%; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 15px; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 10px; font-size: 12px; }
+    .cal-day { padding: 6px; border-radius: 5px; }
+    .cal-day.highlight { background: #ff4d6d; color: white; font-weight: bold; position: relative; }
+    .cal-day.highlight::after { content: 'Your Day ❤️'; position: absolute; top: -18px; left: -10px; font-size: 8px; background: #ff758f; color: white; padding: 2px 4px; border-radius: 4px; white-space: nowrap; }
+
+    /* Envelope */
+    .envelope { width: 180px; height: 120px; background: #ff758f; border-radius: 8px; position: relative; display: flex; justify-content: center; align-items: center; cursor: pointer; margin-top: 20px; }
+    .envelope::before { content: ''; position: absolute; top: 0; border-left: 90px solid transparent; border-right: 90px solid transparent; border-top: 60px solid #ff4d6d; }
+    .envelope-heart { font-size: 24px; color: white; z-index: 2; margin-top: 20px; }
+    .letter-paper { display: none; background: white; border-radius: 10px; padding: 20px; width: 90%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: left; font-size: 14px; line-height: 1.6; }
+
+    /* Balloons */
+    .balloon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; width: 100%; }
+    .balloon { background: #ff4d6d; height: 80px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: transparent; font-size: 10px; padding: 5px; text-align: center; font-weight: bold; transition: all 0.3s; }
+    .balloon.popped { background: white; color: #ff4d6d; border: 2px dashed #ff4d6d; border-radius: 10px; height: auto; min-height: 80px; }
+
+    /* Gallery */
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; margin-top: 15px; }
+    .gallery-card { background: white; padding: 8px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 11px; }
+    .gallery-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; }
+
+    /* Dark Final Screen */
+    .page.dark-screen { background: #1a0b18; color: white; }
+  </style>
+</head>
+<body>
+
+<div class="mobile-container">
+  <div class="steps-bar" id="stepsBar">
+    <div class="step-dot active">00</div>
+    <div class="step-dot">01</div>
+    <div class="step-dot">02</div>
+    <div class="step-dot">03</div>
+    <div class="step-dot">04</div>
+    <div class="step-dot">05</div>
+    <div class="step-dot">06</div>
+    <div class="step-dot">07</div>
+  </div>
+
+  <!-- Page 0: Loading -->
+  <div class="page active" id="page0">
+    <div class="heart-loader">❤️</div>
+    <h3>Preparing something special for you..</h3>
+    <p style="font-size: 12px; color: #888; margin-top: 5px;">Made with love ❤️</p>
+    <div class="progress-bar-bg"><div class="progress-bar" id="pBar"></div></div>
+    <p id="pText" style="margin-top: 10px; font-weight: bold; font-size: 14px;">0%</p>
+  </div>
+
+  <!-- Page 1: Welcome -->
+  <div class="page" id="page1">
+    <span style="font-size: 40px;">🐼</span>
+    <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 12px; margin-top: 10px;" id="nameSub">A LITTLE SOMETHING FOR ANANYA</p>
+    <h2 style="margin: 10px 0; color: #ff4d6d;">IT'S YOUR SPECIAL DAY</h2>
+    <p style="font-size: 13px; color: #666;">Today isn't just another day... It's a day worth celebrating because you exist.</p>
+    <button class="btn" onclick="nextPage(2)">Begin →</button>
+  </div>
+
+  <!-- Page 2: Calendar -->
+  <div class="page" id="page2">
+    <span style="font-size: 30px;">🐼</span>
+    <h2 style="color: #ff4d6d; margin-bottom: 5px;">Mark It Forever</h2>
+    <div class="calendar-card">
+      <h4 id="calMonth">AUGUST 2005</h4>
+      <div class="calendar-grid">
+        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        <span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+        <span class="cal-day highlight" id="calDay">7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+        <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+        <span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span>
+        <span>28</span><span>29</span><span>30</span><span>31</span>
+      </div>
+    </div>
+    <p style="margin-top: 15px; font-size: 13px; font-weight: bold;" id="dateText">07 - 08 - 2005</p>
+    <p style="font-size: 11px; color: #777;">Save this date forever.</p>
+    <button class="btn" onclick="nextPage(3)">Next →</button>
+  </div>
+
+  <!-- Page 3: Letter -->
+  <div class="page" id="page3">
+    <h2 style="color: #ff4d6d;">A Letter from My Heart</h2>
+    <div class="envelope" id="envelopeBtn" onclick="openLetter()">
+      <div class="envelope-heart">❤️</div>
+    </div>
+    <div class="letter-paper" id="letterPaper">
+      <p><b>Dear <span class="person-name">Ananya</span>,</b></p><br>
+      <p>May every single day of your life bring you immense joy, success, and endless reasons to smile.</p><br>
+      <p>Wishing you a lifetime of love and beautiful moments! ❤️</p>
+    </div>
+    <button class="btn" id="letterNextBtn" style="display:none;" onclick="nextPage(4)">Next →</button>
+  </div>
+
+  <!-- Page 4: Balloons -->
+  <div class="page" id="page4">
+    <h2 style="color: #ff4d6d;">Six Little Wishes 🎈</h2>
+    <p style="font-size: 12px; color: #666; margin-top: 5px;">Pop each balloon to reveal a wish.</p>
+    <div class="balloon-grid">
+      <div class="balloon" onclick="popB(this)">May you always have a reason to smile ❤️</div>
+      <div class="balloon" onclick="popB(this)">May your dreams become reality ✨</div>
+      <div class="balloon" onclick="popB(this)">May happiness follow you everywhere 🌸</div>
+      <div class="balloon" onclick="popB(this)">May your life be full of love 💖</div>
+      <div class="balloon" onclick="popB(this)">May you always be protected 🌟</div>
+      <div class="balloon" onclick="popB(this)">Happy Birthday Once Again 🎉</div>
+    </div>
+    <button class="btn" onclick="nextPage(5)">Continue →</button>
+  </div>
+
+  <!-- Page 5: Memories -->
+  <div class="page" id="page5">
+    <h2 style="color: #ff4d6d;">Our Memories ❤️</h2>
+    <p style="font-size: 12px; color: #666;">Some moments stay forever in our hearts.</p>
+    <div class="gallery-grid">
+      <div class="gallery-card"><img src="https://via.placeholder.com/150" alt="Memory"><p>First memory ❤️</p></div>
+      <div class="gallery-card"><img src="https://via.placeholder.com/150" alt="Memory"><p>Smiles together ✨</p></div>
+      <div class="gallery-card"><img src="https://via.placeholder.com/150" alt="Memory"><p>Special moments 🌸</p></div>
+      <div class="gallery-card"><img src="https://via.placeholder.com/150" alt="Memory"><p>Two hearts 💖</p></div>
+    </div>
+    <button class="btn" onclick="nextPage(6)">Continue →</button>
+  </div>
+
+  <!-- Page 6: Constellation -->
+  <div class="page" id="page6">
+    <h2 style="color: #ff4d6d;">Constellation</h2>
+    <p style="font-size: 12px; color: #666; margin-bottom: 20px;">A special heart shape just for you ✨</p>
+    <div style="font-size: 100px; color: #ff4d6d; animation: pulse 1.5s infinite;">💖</div>
+    <button class="btn" onclick="nextPage(7)">Continue →</button>
+  </div>
+
+  <!-- Page 7: Final Screen -->
+  <div class="page dark-screen" id="page7">
+    <div style="font-size: 50px; margin-bottom: 10px;">🎆</div>
+    <h1 style="color: #ff758f; margin-bottom: 10px;">Happy Birthday ❤️</h1>
+    <p style="font-size: 13px; max-width: 80%;">May your life always be as beautiful as your heart.</p>
+    <p style="font-size: 11px; color: #aaa; margin-top: 15px;">Made with love, just for you. ❤️</p>
+    <button class="btn" onclick="nextPage(1)" style="background: #ff758f;">Replay The Surprise ↺</button>
+  </div>
+</div>
+
+<script>
+  // Dynamic Settings (Yahan Name aur Date Badlein)
+  const CONFIG = {
+    name: "Ananya",             // Naam yahan likhein
+    date: "07 - 08 - 2005",     // Format: DD - MM - YYYY
+    monthYear: "AUGUST 2005",  // Calendar Header
+    dayNumber: "7"              // Highlighted Day
+  };
+
+  // Apply Config
+  document.querySelectorAll('.person-name').forEach(el => el.innerText = CONFIG.name);
+  document.getElementById('nameSub').innerText = `A LITTLE SOMETHING FOR ${CONFIG.name.toUpperCase()}`;
+  document.getElementById('calMonth').innerText = CONFIG.monthYear;
+  document.getElementById('calDay').innerText = CONFIG.dayNumber;
+  document.getElementById('dateText').innerText = CONFIG.date;
+
+  // Auto Loader Simulation
+  let progress = 0;
+  const pBar = document.getElementById('pBar');
+  const pText = document.getElementById('pText');
+  const loaderInterval = setInterval(() => {
+    progress += 2;
+    pBar.style.width = progress + '%';
+    pText.innerText = progress + '%';
+    if(progress >= 100) {
+      clearInterval(loaderInterval);
+      nextPage(1);
+    }
+  }, 50);
+
+  // Page Switcher
+  function nextPage(pageNum) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page' + pageNum).classList.add('active');
+    
+    // Update Step Indicators
+    const dots = document.querySelectorAll('.step-dot');
+    dots.forEach((dot, idx) => {
+      if(idx <= pageNum) dot.classList.add('active');
+      else dot.classList.remove('active');
+    });
+  }
+
+  // Envelope Open
+  function openLetter() {
+    document.getElementById('envelopeBtn').style.display = 'none';
+    document.getElementById('letterPaper').style.display = 'block';
+    document.getElementById('letterNextBtn').style.display = 'inline-block';
+  }
+
+  // Balloon Pop
+  function popB(element) {
+    element.classList.add('popped');
+  }
+</script>
+
+</body>
+</html>
