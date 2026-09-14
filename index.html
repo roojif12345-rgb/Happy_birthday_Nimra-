@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy Birthday Nimra Bhabhi!</title>
+  <title>Happy Birthday Lilo! ✨</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +13,7 @@
     }
 
     body {
-      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -29,14 +29,14 @@
       backdrop-filter: blur(10px);
       padding: 30px;
       border-radius: 25px;
-      box-shadow: 0 15px 35px rgba(255, 75, 114, 0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
       text-align: center;
       position: relative;
     }
 
     .page {
       display: none;
-      animation: fadeIn 0.8s ease-in-out;
+      animation: fadeIn 0.6s ease-in-out;
     }
 
     .page.active {
@@ -61,8 +61,21 @@
     .progress-bar {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #ff758c, #ff7eb3);
+      background: linear-gradient(90deg, #ff4b72, #ff758c);
       transition: width 0.1s ease;
+    }
+
+    /* Streak Badge */
+    .streak-badge {
+      display: inline-block;
+      background: #ff4757;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
     }
 
     /* Wishes Cards */
@@ -70,12 +83,12 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 15px;
-      margin: 25px 0;
+      margin: 20px 0;
     }
 
     .wish-card {
       background: #ffffff;
-      border: 2px dashed #ffb6c1;
+      border: 2px dashed #ff85a2;
       padding: 20px;
       border-radius: 18px;
       transition: all 0.3s ease;
@@ -112,24 +125,18 @@
     }
 
     /* Balloons Section */
-    .balloon-instructions {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-
     .balloons-area {
       display: flex;
       justify-content: space-around;
       align-items: center;
       flex-wrap: wrap;
-      min-height: 180px;
+      min-height: 160px;
       margin: 20px 0;
     }
 
     .balloon {
-      width: 80px;
-      height: 100px;
+      width: 75px;
+      height: 95px;
       border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
       display: flex;
       justify-content: center;
@@ -153,34 +160,32 @@
       background: #888;
     }
 
-    .b1 { background: #ff4b72; animation-delay: 0s; }
-    .b2 { background: #ff85a2; animation-delay: 0.5s; }
-    .b3 { background: #70a1ff; animation-delay: 1s; }
-    .b4 { background: #eccc68; animation-delay: 1.5s; }
+    .b1 { background: #ff4757; animation-delay: 0s; }
+    .b2 { background: #2ed573; animation-delay: 0.5s; }
+    .b3 { background: #1e90ff; animation-delay: 1s; }
+    .b4 { background: #ffa502; animation-delay: 1.5s; }
 
     @keyframes float {
       0% { transform: translateY(0px) rotate(-3deg); }
-      100% { transform: translateY(-20px) rotate(3deg); }
+      100% { transform: translateY(-18px) rotate(3deg); }
     }
 
-    /* Balloon Pop Message Box */
     .balloon-msg-box {
       min-height: 60px;
-      background: #fff5f7;
+      background: #fff0f3;
       border: 2px solid #ff4b72;
       border-radius: 12px;
       padding: 15px;
       margin-top: 15px;
-      font-size: 15px;
+      font-size: 14px;
       color: #333;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 500;
-      transition: all 0.3s ease;
     }
 
-    /* Letter & Envelopes */
+    /* Letter Box */
     .letter-paper {
       display: none;
       background: #fffdfa;
@@ -191,7 +196,6 @@
       text-align: left;
       line-height: 1.7;
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      animation: fadeIn 0.5s ease;
     }
 
     /* Buttons & Dots */
@@ -206,12 +210,11 @@
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(255, 75, 114, 0.4);
       margin-top: 15px;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s;
     }
 
     .btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(255, 75, 114, 0.6);
     }
 
     .dots-container {
@@ -226,7 +229,7 @@
       height: 10px;
       background: #ffd1dc;
       border-radius: 50%;
-      transition: background 0.3s;
+      transition: all 0.3s;
     }
 
     .dot.active {
@@ -242,94 +245,97 @@
     
     <!-- PAGE 0: LOADER -->
     <div id="page0" class="page active">
-      <h2 style="color: #ff4b72;">Preparing Something Special...</h2>
-      <p style="color: #666; margin-top: 5px;">For Future Bhabhi Nimra ✨</p>
-      <p id="dateText" style="margin-top: 10px; color: #888; font-size: 14px;"></p>
+      <h2 style="color: #ff4b72;">Loading Birthday Surprise... ✨</h2>
+      <p style="color: #666; margin-top: 5px;">Connecting to Nimra's Phone... 📱</p>
+      <p id="dateText" style="margin-top: 10px; color: #888; font-size: 13px;"></p>
       <div class="progress-bar-container">
         <div id="pBar" class="progress-bar"></div>
       </div>
       <p id="pText" style="font-weight: bold; color: #ff4b72;">0%</p>
     </div>
 
-    <!-- PAGE 1: BALLOONS POPPING GAME -->
+    <!-- PAGE 1: POP BALLOONS -->
     <div id="page1" class="page">
-      <h2 style="color: #ff4b72;">🎈 Pop The Balloons!</h2>
-      <p class="balloon-instructions">Balloons par click karein aur Nimra Bhabhi ke liye surprise wishes dekhein!</p>
+      <div class="streak-badge">🔥 TikTok Streak Restored!</div>
+      <h2 style="color: #ff4b72;">Hello Guys! 👋</h2>
+      <p style="color: #666; font-size: 14px; margin-top: 5px;">Balloons par click karo aur surprise wishes unlock karo!</p>
 
       <div class="balloons-area">
-        <div class="balloon b1" onclick="popBalloon(this, '🎉 Happy Birthday Nimra Bhabhi! May your day be filled with endless joy!')">🎈</div>
-        <div class="balloon b2" onclick="popBalloon(this, '💖 Future Bhabhi, thank you for bringing so much happiness into our lives!')">🎈</div>
-        <div class="balloon b3" onclick="popBalloon(this, '🌸 Wishing you good health, lots of love, and success in everything!')">🎈</div>
-        <div class="balloon b4" onclick="popBalloon(this, '🎂 May this year bring you all the blessings & happiness you deserve!')">🎈</div>
+        <div class="balloon b1" onclick="popBalloon(this, '🔥 Happy Birthday Lilo! TikTok ki streaks kabhi tootne na paayein!')">🎈</div>
+        <div class="balloon b2" onclick="popBalloon(this, '📲 Instagram Reels ki queen, stay happiest always!')">🎈</div>
+        <div class="balloon b3" onclick="popBalloon(this, '✨ To my best partner in crime, Nimal! Have the best year ahead!')">🎈</div>
+        <div class="balloon b4" onclick="popBalloon(this, '🎁 Har call par HELLO GUYS kehne wali partner, Happy Birthday!')">🎈</div>
       </div>
 
       <div id="balloonMsg" class="balloon-msg-box">
-        ✨ Kisi bhi balloon par click karke wish kholein!
+        ✨ Balloon pop karke message read karo!
       </div>
 
-      <button class="btn" onclick="nextPage(2)">Next: View Wishes ➡️</button>
+      <button class="btn" onclick="nextPage(2)">Next: Wish Cards ➡️</button>
     </div>
 
     <!-- PAGE 2: WISHES CARDS -->
     <div id="page2" class="page">
-      <h1 style="color: #ff4b72;">✨ Wishes For Nimra Bhabhi ✨</h1>
-      <p style="color: #666; margin-top: 5px;">Our future Bhabhi, the sweetest person! ❤️</p>
+      <h1 style="color: #ff4b72;">✨ Special Wish Cards ✨</h1>
+      <p style="color: #666; margin-top: 5px;">For Nimra / Lilo / Nimal ❤️</p>
 
       <div class="wishes-grid">
         <div class="wish-card" onclick="popB(this)">
-          <div class="wish-icon">👑</div>
+          <div class="wish-icon">🔥</div>
           <div class="wish-text">
-            <h3>Welcome To Family!</h3>
-            <p>Nimra Bhabhi, humari family mein aapka welcome hai! Aapke aane se sab bohot khush hain.</p>
+            <h3>Streak Queen Lilo!</h3>
+            <p>Humari TikTok streaks hamesha 999+ rahein aur hum aise hi roz reels share karte rahein!</p>
+          </div>
+        </div>
+
+        <div class="wish-card" onclick="popB(this)">
+          <div class="wish-icon">📞</div>
+          <div class="wish-text">
+            <h3>Hello Guys Partner!</h3>
+            <p>Call uthate hi "Hello Guys" bolne wali sabse unique dost ko Happy Birthday!</p>
           </div>
         </div>
 
         <div class="wish-card" onclick="popB(this)">
           <div class="wish-icon">🌸</div>
           <div class="wish-text">
-            <h3>Always Stay Happy</h3>
-            <p>Allah aapko hamesha aise hi muskurata rakhe aur aapki har khwahish poori ho.</p>
-          </div>
-        </div>
-
-        <div class="wish-card" onclick="popB(this)">
-          <div class="wish-icon">🎁</div>
-          <div class="wish-text">
-            <h3>Best Wishes</h3>
-            <p>Aapka naya saal bohot sari kamyabi, piyar aur meethi memories se bhara ho.</p>
+            <h3>Stay Blessed Nimal!</h3>
+            <p>Aapki life meethi memories, laughter, aur success se bhari rahe!</p>
           </div>
         </div>
 
         <div class="wish-card" onclick="popB(this)">
           <div class="wish-icon">🎂</div>
           <div class="wish-text">
-            <h3>Lots of Love</h3>
-            <p>Happy Birthday once again to the best Future Bhabhi Nimra! Have a wonderful day!</p>
+            <h3>Lots of Love Nimra!</h3>
+            <p>Happy Birthday once again! Hamesha aise hi mast aur cool rehna.</p>
           </div>
         </div>
       </div>
 
-      <button class="btn" onclick="nextPage(3)">Next: Special Letter 📩</button>
+      <button class="btn" onclick="nextPage(3)">Next: Read Letter 📩</button>
     </div>
 
-    <!-- PAGE 3: LETTER SECTION -->
+    <!-- PAGE 3: SPECIAL NOTE -->
     <div id="page3" class="page">
-      <h2 style="color: #ff4b72;">✉️ A Special Note</h2>
-      <p style="color: #666; margin-bottom: 15px;">Click to open letter for Nimra Bhabhi</p>
-      <button id="envelopeBtn" class="btn" onclick="openLetter()">Open Letter ✉️</button>
+      <h2 style="color: #ff4b72;">✉️ Call Log & Note</h2>
+      <p style="color: #666; margin-bottom: 15px;">Click to open special message for Lilo</p>
+      <button id="envelopeBtn" class="btn" onclick="openLetter()">Open Message ✉️</button>
       
       <div id="letterPaper" class="letter-paper">
-        <h3 style="color: #ff4b72; margin-bottom: 10px;">Dear Nimra Bhabhi,</h3>
-        <p>Aap humari family ka sabse pyara hissa banne ja rahi hain. Hum sab aapke aane par bohot excited hain. Wishing you the happiest and most blessed birthday! Stay happy and blessed always! ✨❤️</p>
+        <h3 style="color: #ff4b72; margin-bottom: 10px;">"Hello Guys!" 📱</h3>
+        <p>Happy Birthday Lilo / Nimal / Nimra! ✨</p><br>
+        <p>Aapke saath baat karna, roz endlessly reels aur TikTok streaks exchange karna sabse fun hota hai. Wish you a wonderful birthday filled with so much happiness, peace, and late-night calls! Keep shining!</p>
       </div>
 
-      <button id="letterNextBtn" class="btn" style="display: none;" onclick="nextPage(4)">Final Wish 🎉</button>
+      <button id="letterNextBtn" class="btn" style="display: none;" onclick="nextPage(4)">Final Celebration 🎉</button>
     </div>
 
     <!-- PAGE 4: FINAL CELEBRATION -->
     <div id="page4" class="page">
-      <h1 style="color: #ff4b72; font-size: 34px;">🎉 Happy Birthday <br> Nimra Bhabhi! 🎉</h1>
-      <p style="margin-top: 15px; font-size: 18px; color: #444;">Have an amazing year ahead full of love and laughter!</p>
+      <h1 style="color: #ff4b72; font-size: 32px;">🎉 Happy Birthday <br> Nimra! 🎉</h1>
+      <p style="margin-top: 15px; font-size: 18px; color: #444;">(AKA Lilo & Nimal ✨)</p>
+      <p style="margin-top: 10px; font-size: 15px; color: #666;">Keep sending reels & maintaining streaks forever! 🔥</p>
     </div>
 
     <!-- PAGINATION DOTS -->
